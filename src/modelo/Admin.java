@@ -9,6 +9,7 @@ public class Admin {
 		super();
 		this.nombre = nombre;
 		this.id = id;
+		// Hola
 	}
 
 	public String getNombre() {
