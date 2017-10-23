@@ -19,16 +19,12 @@ public class Controller {
 	}
 	
 	public void abrirVentana(String ventana) {
-		JFrame frame = null;
-		
 		switch(ventana) {
 		case "registro":
-			
+			Registro registro = new Registro();
+			registro.setVisible(true);
 			break;
 		}
 		
-		if(frame != null) {
-			frame.setVisible(true);
-		}
 	}
 }
