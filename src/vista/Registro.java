@@ -1,16 +1,35 @@
 package vista;
 
-import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Properties;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
 import javax.swing.JLabel;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+
+import controlador.DateLabelFormatter;
+import javax.swing.SpringLayout;
+
 public class Registro extends JFrame{
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTextField textField_3;
+	private JPasswordField passwordField;
+	private JPasswordField passwordField_1;
+	private SpringLayout springLayout;
 
 	//private JFrame frame;
 
@@ -45,62 +64,111 @@ public class Registro extends JFrame{
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBounds(100, 100, 584, 472);
-		
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		this.getContentPane().setLayout(gridBagLayout);
+		getContentPane().setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Nombre:");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
-		gbc_lblNewLabel.gridx = 1;
-		gbc_lblNewLabel.gridy = 2;
-		this.getContentPane().add(lblNewLabel, gbc_lblNewLabel);
+		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel.setBounds(106, 79, 93, 14);
+		this.getContentPane().add(lblNewLabel);
 		
 		JLabel lblDni = new JLabel("DNI:");
-		lblDni.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_lblDni = new GridBagConstraints();
-		gbc_lblDni.insets = new Insets(0, 0, 5, 0);
-		gbc_lblDni.gridx = 1;
-		gbc_lblDni.gridy = 3;
-		this.getContentPane().add(lblDni, gbc_lblDni);
+		lblDni.setBounds(126, 117, 73, 14);
+		lblDni.setHorizontalAlignment(SwingConstants.RIGHT);
+		this.getContentPane().add(lblDni);
 		
 		JLabel lblDomicilio = new JLabel("Domicilio:");
-		GridBagConstraints gbc_lblDomicilio = new GridBagConstraints();
-		gbc_lblDomicilio.insets = new Insets(0, 0, 5, 0);
-		gbc_lblDomicilio.gridx = 1;
-		gbc_lblDomicilio.gridy = 4;
-		this.getContentPane().add(lblDomicilio, gbc_lblDomicilio);
+		lblDomicilio.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblDomicilio.setBounds(106, 157, 93, 18);
+		this.getContentPane().add(lblDomicilio);
 		
 		JLabel lblEmail = new JLabel("Email:");
-		GridBagConstraints gbc_lblEmail = new GridBagConstraints();
-		gbc_lblEmail.insets = new Insets(0, 0, 5, 0);
-		gbc_lblEmail.gridx = 1;
-		gbc_lblEmail.gridy = 5;
-		this.getContentPane().add(lblEmail, gbc_lblEmail);
+		lblEmail.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblEmail.setBounds(119, 197, 80, 14);
+		this.getContentPane().add(lblEmail);
 		
 		JLabel lblPassword = new JLabel("Password:");
-		GridBagConstraints gbc_lblPassword = new GridBagConstraints();
-		gbc_lblPassword.insets = new Insets(0, 0, 5, 0);
-		gbc_lblPassword.gridx = 1;
-		gbc_lblPassword.gridy = 6;
-		this.getContentPane().add(lblPassword, gbc_lblPassword);
+		lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblPassword.setBounds(116, 240, 85, 14);
+		this.getContentPane().add(lblPassword);
 		
 		JLabel lblRepetirPassword = new JLabel("Repetir Password:");
-		GridBagConstraints gbc_lblRepetirPassword = new GridBagConstraints();
-		gbc_lblRepetirPassword.insets = new Insets(0, 0, 5, 0);
-		gbc_lblRepetirPassword.gridx = 1;
-		gbc_lblRepetirPassword.gridy = 7;
-		this.getContentPane().add(lblRepetirPassword, gbc_lblRepetirPassword);
+		lblRepetirPassword.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblRepetirPassword.setBounds(70, 274, 129, 14);
+		this.getContentPane().add(lblRepetirPassword);
 		
 		JLabel lblFechaDeNacimiento = new JLabel("Fecha de nacimiento:");
-		GridBagConstraints gbc_lblFechaDeNacimiento = new GridBagConstraints();
-		gbc_lblFechaDeNacimiento.gridx = 1;
-		gbc_lblFechaDeNacimiento.gridy = 8;
-		this.getContentPane().add(lblFechaDeNacimiento, gbc_lblFechaDeNacimiento);
-	}
+		lblFechaDeNacimiento.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblFechaDeNacimiento.setBounds(57, 301, 142, 22);
+		this.getContentPane().add(lblFechaDeNacimiento);
+		
+		JLabel lblRellenaTusDatos = new JLabel("Rellena tus datos:");
+		lblRellenaTusDatos.setFont(new Font("Systematic J", Font.ITALIC, 15));
+		lblRellenaTusDatos.setHorizontalAlignment(SwingConstants.CENTER);
+		lblRellenaTusDatos.setBounds(190, 30, 204, 14);
+		getContentPane().add(lblRellenaTusDatos);
+		
+		textField = new JTextField();
+		textField.setBounds(215, 76, 249, 20);
+		getContentPane().add(textField);
+		textField.setColumns(10);
+		
+		textField_1 = new JTextField();
+		textField_1.setBounds(215, 114, 93, 20);
+		getContentPane().add(textField_1);
+		textField_1.setColumns(10);
+		
+		textField_2 = new JTextField();
+		textField_2.setBounds(215, 156, 249, 20);
+		getContentPane().add(textField_2);
+		textField_2.setColumns(10);
+		
+		textField_3 = new JTextField();
+		textField_3.setBounds(215, 194, 249, 20);
+		getContentPane().add(textField_3);
+		textField_3.setColumns(10);
+		
+		passwordField = new JPasswordField();
+		passwordField.setBounds(215, 237, 174, 20);
+		getContentPane().add(passwordField);
+		
+		passwordField_1 = new JPasswordField();
+		passwordField_1.setBounds(215, 271, 174, 20);
+		getContentPane().add(passwordField_1);
+		
+		JButton btnNewButton = new JButton("ACEPTAR");
+		btnNewButton.setBounds(106, 356, 106, 23);
+		getContentPane().add(btnNewButton);
+		
+		JButton btnNewButton_1 = new JButton("ATR\u00C1S");
+		btnNewButton_1.setBounds(298, 356, 106, 23);
+		getContentPane().add(btnNewButton_1);
+		
+		
+		UtilDateModel model = new UtilDateModel();
+		Properties p = new Properties();
+		p.put("text.today", "Hoy");
+		p.put("text.month", "Month");
+		p.put("text.year", "Year");
+		JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+		/**springLayout.putConstraint(SpringLayout.NORTH, datePicker.getJFormattedTextField(), -23, SpringLayout.SOUTH, datePicker);
+		springLayout.putConstraint(SpringLayout.SOUTH, datePicker.getJFormattedTextField(), -3, SpringLayout.SOUTH, datePicker);
+		springLayout = (SpringLayout) datePicker.getLayout();
+		**/
+		datePicker.getJFormattedTextField().setBounds(0, 0, 84, 23);
+		 
+		datePicker.setBounds(214, 301, 150, 30);
+		this.getContentPane().add(datePicker);
+		
+		datePicker.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Date selectedDate = (Date) datePicker.getModel().getValue();
+				DateFormat df = new SimpleDateFormat("dd-MM-YYYY");
+				String fechaFormateada = df.format(selectedDate.getTime());
+				System.out.println(selectedDate);
+				
+			}
+		});
 
+	}
 }

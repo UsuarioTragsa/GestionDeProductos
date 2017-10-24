@@ -49,40 +49,6 @@ public class DetallesProducto {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Usuario:");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel.setBounds(315, 27, 99, 21);
-		frame.getContentPane().add(lblNewLabel);
 		
-		JLabel lblContrasea = new JLabel("Contrase\u00F1a:");
-		lblContrasea.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblContrasea.setBounds(315, 59, 84, 21);
-		frame.getContentPane().add(lblContrasea);
-		
-		textField = new JTextField();
-		textField.setBounds(402, 29, 145, 20);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
-		
-		passwordField = new JPasswordField();
-		passwordField.setBounds(402, 59, 145, 20);
-		frame.getContentPane().add(passwordField);
-		
-		JButton btnNewButton = new JButton("Login");
-		btnNewButton.setBounds(315, 104, 99, 23);
-		frame.getContentPane().add(btnNewButton);
-		
-		JButton btnNewButton_1 = new JButton("Registrarse");
-		btnNewButton_1.setBounds(448, 104, 99, 23);
-		frame.getContentPane().add(btnNewButton_1);
-		
-		JPanel panel = new JPanel();
-		panel.setBounds(27, 182, 520, 229);
-		frame.getContentPane().add(panel);
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(27, 11, 199, 160);
-		frame.getContentPane().add(panel_1);
 	}
 }
