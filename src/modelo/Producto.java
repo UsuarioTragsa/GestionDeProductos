@@ -2,6 +2,7 @@ package modelo;
 
 public class Producto {
 	
+	private int id;
 	private String nombre;
 	private double precio;
 	private String descripcionProducto;
@@ -9,13 +10,24 @@ public class Producto {
 	private String categoria;
 	
 	
-	public Producto(String nombre, double precio, String descripcionProducto, int cantidad, String categoria) {
+	public Producto(int id,String nombre, double precio, String descripcionProducto, int cantidad, String categoria) {
 		super();
+		this.id = id;
 		this.nombre = nombre;
 		this.precio = precio;
 		this.descripcionProducto = descripcionProducto;
 		this.cantidad = cantidad;
 		this.categoria = categoria;
+	}
+
+
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 

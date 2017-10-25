@@ -20,6 +20,8 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
 import controlador.DateLabelFormatter;
+import controlador.listeners.AceptarRegistroListener;
+
 import javax.swing.SpringLayout;
 
 public class Registro extends JFrame{
@@ -151,24 +153,23 @@ public class Registro extends JFrame{
 		p.put("text.year", "Year");
 		JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
 		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-		/**springLayout.putConstraint(SpringLayout.NORTH, datePicker.getJFormattedTextField(), -23, SpringLayout.SOUTH, datePicker);
-		springLayout.putConstraint(SpringLayout.SOUTH, datePicker.getJFormattedTextField(), -3, SpringLayout.SOUTH, datePicker);
-		springLayout = (SpringLayout) datePicker.getLayout();
-		**/
-		datePicker.getJFormattedTextField().setBounds(0, 0, 84, 23);
+		
+		//datePicker.getJFormattedTextField().setBounds(0, 0, 84, 23);
 		 
 		datePicker.setBounds(214, 301, 150, 30);
 		this.getContentPane().add(datePicker);
 		
-		datePicker.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Date selectedDate = (Date) datePicker.getModel().getValue();
-				DateFormat df = new SimpleDateFormat("dd-MM-YYYY");
-				String fechaFormateada = df.format(selectedDate.getTime());
-				System.out.println(selectedDate);
-				
-			}
-		});
-
+//		datePicker.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				Date selectedDate = (Date) datePicker.getModel().getValue();
+//				DateFormat df = new SimpleDateFormat("dd-MM-YYYY");
+//				String fechaFormateada = df.format(selectedDate.getTime());
+//				System.out.println(selectedDate);
+//				
+//			}
+//		});
+		AceptarRegistroListener arl = new AceptarRegistroListener(this, textField, textField_1, textField_2, 
+				textField_3, passwordField, passwordField_1, datePicker);
+		btnNewButton.addActionListener(arl);
 	}
 }

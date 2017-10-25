@@ -6,12 +6,13 @@ import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import controlador.listeners.HomeToRegistroListener;
+import controlador.listeners.LoginListener;
+import modelo.vista.ImagenPanel;
 
 public class Login {
 
@@ -48,6 +49,7 @@ public class Login {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 584, 472);
+		frame.setTitle("Log in");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -76,19 +78,21 @@ public class Login {
 		frame.getContentPane().add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Registrarse");
-		btnNewButton_1.setBounds(448, 104, 99, 23);
+		btnNewButton_1.setBounds(432, 104, 115, 23);
 		frame.getContentPane().add(btnNewButton_1);
 		
-		JPanel panel = new JPanel();
-		panel.setBounds(27, 182, 520, 229);
-		frame.getContentPane().add(panel);
+		ImagenPanel imagenPanel = new ImagenPanel("./resources/imgs/muebles-1.jpg");
+		imagenPanel.setBounds(27, 182, 520, 229);
+		frame.getContentPane().add(imagenPanel);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(27, 11, 199, 160);
-		frame.getContentPane().add(panel_1);
+		ImagenPanel logoPanel = new ImagenPanel("./resources/imgs/logo.jpg");
+		logoPanel.setBounds(27, 11, 199, 140);
+		frame.getContentPane().add(logoPanel);
 		
 		HomeToRegistroListener hr = new HomeToRegistroListener(frame);
 		btnNewButton_1.addActionListener(hr);
+		LoginListener ll = new LoginListener(frame, textField, passwordField);
+		btnNewButton.addActionListener(ll);
 		
 	}
 
