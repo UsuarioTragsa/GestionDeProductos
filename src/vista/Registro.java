@@ -1,11 +1,6 @@
 package vista;
 
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -13,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -21,8 +17,7 @@ import org.jdatepicker.impl.UtilDateModel;
 
 import controlador.DateLabelFormatter;
 import controlador.listeners.AceptarRegistroListener;
-
-import javax.swing.SpringLayout;
+import controlador.listeners.RegistroToHomeListener;
 
 public class Registro extends JFrame{
 	private JTextField textField;
@@ -153,23 +148,18 @@ public class Registro extends JFrame{
 		p.put("text.year", "Year");
 		JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
 		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-		
-		//datePicker.getJFormattedTextField().setBounds(0, 0, 84, 23);
-		 
+
 		datePicker.setBounds(214, 301, 150, 30);
+		
 		this.getContentPane().add(datePicker);
 		
-//		datePicker.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//				Date selectedDate = (Date) datePicker.getModel().getValue();
-//				DateFormat df = new SimpleDateFormat("dd-MM-YYYY");
-//				String fechaFormateada = df.format(selectedDate.getTime());
-//				System.out.println(selectedDate);
-//				
-//			}
-//		});
+		
+
 		AceptarRegistroListener arl = new AceptarRegistroListener(this, textField, textField_1, textField_2, 
 				textField_3, passwordField, passwordField_1, datePicker);
 		btnNewButton.addActionListener(arl);
+		
+		RegistroToHomeListener rthl = new RegistroToHomeListener(this);
+		btnNewButton_1.addActionListener(rthl);
 	}
 }

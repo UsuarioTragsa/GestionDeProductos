@@ -1,44 +1,34 @@
 package vista;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-
-import controlador.listeners.ListarProductosListener;
-import modelo.Producto;
-import modelo.Usuario;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import java.awt.Font;
-import javax.swing.JTextField;
-import javax.swing.JTextArea;
 import javax.swing.JSpinner;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
+import controlador.listeners.AceptarNuevoProductoListener;
+import controlador.listeners.AddProductoListener;
+import controlador.listeners.ListarProductosListener;
+import controlador.listeners.ListarUsuariosListener;
+import modelo.Usuario;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class AdminMain extends JFrame {
 
-	// private JFrame frame;
-	private JTable table;
-	//private ArrayList<Producto> productos = new ArrayList<>();
+	private JTable tableProductos,tableUsers;
 	private ArrayList<Usuario> usuarios = new ArrayList<>();
 	private JTextField nombreField;
 	private JTextField precioField;
-	private JTextField textField;
-
-	/**
-	 * Launch the application.
-	 */
-	/*
-	 * public static void main(String[] args) { EventQueue.invokeLater(new
-	 * Runnable() { public void run() { try { AdminMain window = new AdminMain();
-	 * window.frame.setVisible(true); } catch (Exception e) { e.printStackTrace(); }
-	 * } }); }
-	 */
 
 	/**
 	 * Create the application.
@@ -81,15 +71,6 @@ public class AdminMain extends JFrame {
 		panel3.setBounds(32, 121, 507, 279);
 		getContentPane().add(panel3);
 
-		table = new JTable();
-		JScrollPane js = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		js.setPreferredSize(new Dimension(489, 270));
-		js.setVisible(true);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		panel2.add(js);
-		table.setFillsViewportHeight(true);
-
 		panel.setVisible(false);
 		panel2.setVisible(false);
 		panel3.setVisible(false);
@@ -98,9 +79,21 @@ public class AdminMain extends JFrame {
 		btnNewButton_1.setName("productos");
 		btnNewButton_2.setName("usuarios");
 		
-		ListarProductosListener lpl = new ListarProductosListener(table, panel,panel2,panel3,btnNewButton_1);
+		// Panel Listar Productos
+		tableProductos = new JTable();
+		JScrollPane js = new JScrollPane(tableProductos, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		js.setPreferredSize(new Dimension(489, 270));
+		js.setVisible(true);
+		tableProductos.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		panel2.add(js);
+		tableProductos.setFillsViewportHeight(true);
+
+		ListarProductosListener lpl = new ListarProductosListener(tableProductos, panel,panel2,panel3,btnNewButton_1);
+		btnNewButton_1.addActionListener(lpl);
 		panel.setLayout(null);
 		
+		// Panel añadir productos
 		JLabel jlabel = new JLabel("Nuevo producto");
 		jlabel.setFont(new Font("Tempus Sans ITC", Font.BOLD, 13));
 		jlabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -151,15 +144,34 @@ public class AdminMain extends JFrame {
 		lblCategora.setBounds(137, 230, 89, 14);
 		panel.add(lblCategora);
 		
-		textField = new JTextField();
-		textField.setBounds(236, 227, 120, 20);
-		panel.add(textField);
-		textField.setColumns(10);
+		JComboBox comboBox = new JComboBox();
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Cama", "Armarios", "Televisores", "Mesas"}));
+		comboBox.setBounds(236, 227, 95, 20);
+		panel.add(comboBox);
 		
 		JButton btnAceptar = new JButton("Aceptar");
 		btnAceptar.setBounds(408, 245, 89, 23);
 		panel.add(btnAceptar);
-		btnNewButton_1.addActionListener(lpl);
+		
+		AceptarNuevoProductoListener anpl = new AceptarNuevoProductoListener(this, nombreField, precioField,
+				textArea, cantidadSpinner, comboBox);
+		btnAceptar.addActionListener(anpl);
+		
+		AddProductoListener apl = new AddProductoListener(panel,panel2,panel3);
+		btnNewButton.addActionListener(apl);
+		
+		// Panel Listar Usuarios
+		tableUsers = new JTable();
+		js = new JScrollPane(tableUsers, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		js.setPreferredSize(new Dimension(489, 270));
+		js.setVisible(true);
+		tableUsers.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		panel3.add(js);
+		tableUsers.setFillsViewportHeight(true);
 
+		ListarUsuariosListener lul = new ListarUsuariosListener(tableUsers, panel,panel2,panel3,btnNewButton_2);
+		btnNewButton_2.addActionListener(lul);
+		
 	}
 }

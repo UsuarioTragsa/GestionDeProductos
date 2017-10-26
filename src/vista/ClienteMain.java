@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import controlador.Controller;
+import controlador.listeners.TablaListener;
 import modelo.Producto;
 import modelo.Usuario;
 import modelo.vista.ImagenPanel;
@@ -112,6 +113,9 @@ public class ClienteMain extends JFrame{
 		getContentPane().add(panel_1);
 		
 		personalizarTabla();
+		
+		TablaListener tl = new TablaListener(table,productos);
+		table.addMouseListener(tl);
 
 	}
 	

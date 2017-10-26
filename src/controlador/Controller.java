@@ -7,9 +7,11 @@ import java.util.Date;
 import java.util.regex.Pattern;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import org.jdatepicker.impl.JDatePickerImpl;
@@ -21,6 +23,8 @@ import modelo.Usuario;
 import modelo.bbdd.Conexionconbasededatos;
 import vista.AdminMain;
 import vista.ClienteMain;
+import vista.DetallesProducto;
+import vista.Login;
 import vista.Registro;
 
 public class Controller {
@@ -36,6 +40,9 @@ public class Controller {
 	public void cerrarVentana(JFrame frame) {
 		frame.dispose();
 	}
+	public void cerrarVentana(JDialog dialog) {
+		dialog.dispose();
+	}
 
 	public void abrirVentana(String ventana) {
 		switch (ventana) {
@@ -43,20 +50,14 @@ public class Controller {
 			Registro registro = new Registro();
 			registro.setVisible(true);
 			break;
-		/*case "usuario":
-			ClienteMain cm = new ClienteMain();
-			cm.setVisible(true);
-			break;*/
 		case "admin":
 			AdminMain am = new AdminMain();
 			am.setVisible(true);
+			break;	
+		case "login":
+			Login l = new Login();
+			l.setVisible(true);
 			break;
-		/*case "clienteMain":
-			ClienteMain cm2 = new ClienteMain();
-			cm2.setVisible(true);
-			break;
-		}*/
-		
 		}
 	}
 	
@@ -69,6 +70,14 @@ public class Controller {
 		}
 	}
 
+	public void abrirVentana(String ventana, Producto producto, JTable table) {
+		switch (ventana) {
+		case "DetallesProducto":
+			DetallesProducto dp = new DetallesProducto(producto, table);
+			dp.setVisible(true);
+			break;
+		}
+	}
 		
 	public Usuario validarUsuario(JTextField userField, JTextField passField) {
 		Usuario usuario = null;
@@ -199,12 +208,24 @@ public class Controller {
 		// si la validación es correcta se insertan los campos en la bbdd
 		Conexionconbasededatos connection = new Conexionconbasededatos();
 		try {
-			connection.conexionBBDD("sql11199867");
+			Date dateToday = new Date();
+			if(selectedDate.before(dateToday)) {
+				connection.conexionBBDD("sql11199867");
+				// convierto la fecha de nacimiento a sql.date
+				java.sql.Date date = new java.sql.Date(selectedDate.getTime());
+
+				AccesoDatos ad = new AccesoDatos();
+				ad.insertarUsuario(connection, nm, nif, dom, date, mail, pass);
+			}else {
+				return "La fecha de nacimiento es posterior a hoy";
+			}
+			
+			/*connection.conexionBBDD("sql11199867");
 			// convierto la fecha de nacimiento a sql.date
 			java.sql.Date date = new java.sql.Date(selectedDate.getTime());
 
 			AccesoDatos ad = new AccesoDatos();
-			ad.insertarUsuario(connection, nm, nif, dom, date, mail, pass);
+			ad.insertarUsuario(connection, nm, nif, dom, date, mail, pass);*/
 		} catch (NullPointerException npe) {
 		} catch (ClassNotFoundException e1) {
 			e1.printStackTrace();
@@ -225,6 +246,10 @@ public class Controller {
 	public void registroFail(JFrame frame, String mensaje) {
 		JOptionPane.showMessageDialog(frame, mensaje, "Registro Fail", JOptionPane.ERROR_MESSAGE);
 	}
+	
+	public void productoFail(JFrame frame) {
+		JOptionPane.showMessageDialog(frame, "Datos no válidos", "Producto Fail", JOptionPane.ERROR_MESSAGE);
+	}
 
 	public void registroOk(JFrame frame) {
 		JOptionPane.showMessageDialog(frame, "Los datos han sido registrados correctamente", "Registro Ok",
@@ -243,7 +268,8 @@ public class Controller {
 			rs = ad.obtenerProducto(connection);
 			
 			while(rs.next()) {
-				productos.add(new Producto(rs.getInt(1),rs.getString(2),rs.getDouble(3),rs.getString(4),rs.getInt(5),rs.getString(6)));
+				productos.add(new Producto(rs.getInt(1),rs.getString(2),rs.getDouble(3),rs.getString(4),
+						rs.getInt(5),rs.getString(6),rs.getString(7)));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -258,11 +284,43 @@ public class Controller {
 		return productos;
 	}
 	
+	public ArrayList<Usuario> obtenerUsuarios(){
+		Conexionconbasededatos connection = new Conexionconbasededatos();
+		AccesoDatos ad = new AccesoDatos();
+		ResultSet rs = null;
+		ArrayList<Usuario> usuarios = new ArrayList<>();
+		Date fechaNacimiento = null;
+		
+		try {
+			connection.conexionBBDD("sql11199867");
+			
+			rs = ad.obtenerUsuario(connection);
+			
+			while(rs.next()) {
+				usuarios.add(new Usuario(rs.getString("nombre"),rs.getString("dni"),
+						rs.getString("domicilio"),rs.getDate("fechaNacimiento"),rs.getString("mail")));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			connection.cerrarConexion();
+		}
+		
+		return usuarios;
+	}
+	
 	public void verPanel(JPanel panelProductos,JPanel panel,JPanel panelUsers,JButton boton) {
 		String nombre = boton.getName();
 		
 		switch(nombre) {
 		case "add":
+			panelProductos.setVisible(false);
+			panel.setVisible(true);
+			panelUsers.setVisible(false);
 			break;
 		case "productos":
 			panelProductos.setVisible(true);
@@ -270,7 +328,58 @@ public class Controller {
 			panelUsers.setVisible(false);
 			break;
 		case "usuarios":
+			panelProductos.setVisible(false);
+			panel.setVisible(false);
+			panelUsers.setVisible(true);
 			break;
 		}
+	}
+	
+	public void comprarProducto(Producto p) {
+		Conexionconbasededatos connection = new Conexionconbasededatos();
+		AccesoDatos ad = new AccesoDatos();
+		try {
+			connection.conexionBBDD("sql11199867");
+			
+			ad.comprarProducto(connection, p);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			connection.cerrarConexion();
+		}
+	}
+	
+	public void compraOk(JDialog dialog) {
+		JOptionPane.showMessageDialog(dialog, "Compra realizada", "Compra",
+				JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	public void addProducto(String nombre, double precio, String descripcion, int cantidad, String categoria) {
+		Conexionconbasededatos connection = new Conexionconbasededatos();
+		AccesoDatos ad = new AccesoDatos();
+		try {
+			connection.conexionBBDD("sql11199867");
+			
+			ad.addProducto(connection, nombre, precio, descripcion, cantidad, categoria);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			connection.cerrarConexion();
+		}
+		
+	}
+
+	public void productoOK(AdminMain frame) {
+		JOptionPane.showMessageDialog(frame, "Producto insertado", "Producto ok",
+				JOptionPane.INFORMATION_MESSAGE);
+		
 	}
 }

@@ -8,9 +8,10 @@ public class Producto {
 	private String descripcionProducto;
 	private int cantidad;
 	private String categoria;
+	private String url;
 	
 	
-	public Producto(int id,String nombre, double precio, String descripcionProducto, int cantidad, String categoria) {
+	public Producto(int id,String nombre, double precio, String descripcionProducto, int cantidad, String categoria, String url) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -18,6 +19,7 @@ public class Producto {
 		this.descripcionProducto = descripcionProducto;
 		this.cantidad = cantidad;
 		this.categoria = categoria;
+		this.url = url;
 	}
 
 
@@ -78,6 +80,15 @@ public class Producto {
 
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
+	}
+
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	
 	
